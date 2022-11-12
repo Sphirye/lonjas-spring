@@ -3,6 +3,7 @@ package com.sphirye.lonjas.service.connector.twitter
 import com.sphirye.lonjas.service.connector.twitter.model.Tweet
 import com.sphirye.lonjas.service.connector.twitter.model.Tweets
 import com.sphirye.lonjas.service.tool.RetrofitTool
+import com.sphirye.lonjas.service.tool.RetrofitTool.gson
 import io.github.cdimascio.dotenv.dotenv
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -28,7 +29,7 @@ class TweetConnector(
             "exclude" to "retweets",
             "user.fields" to "username,profile_image_url",
             "expansions" to "attachments.media_keys,author_id",
-            "media.fields" to "type,url",
+            "media.fields" to "type,url,variants",
             "max_results" to "100"
         )
 
@@ -49,19 +50,19 @@ class TweetConnector(
         println("Iniciando sincronización.")
 
         while (!finished) {
-            println(count)
-
             val response = findPageableTweetsByUserId(userId, nextToken)
             count += 1
 
             response.data.forEach { tweets.data.add(it) }
-            response.includes.media.forEach { tweets.includes.media.add(it) }
+            response.includes.media.forEach {
+                tweets.includes.media.add(it)
+            }
 
             nextToken = response.meta!!.nextToken
             finished = (response.meta!!.nextToken == null)
         }
 
-        println("Sincronización finalizada.")
+        println("La sincronización finalizo con ${count + 1} peticiones en total.")
 
         return tweets
     }

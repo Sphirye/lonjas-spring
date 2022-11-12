@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 class Media (
     @SerializedName("media_key") var mediaKey: String? = null,
-    var url: String? = null,
     var type: MediaType? = null,
-    var variants: MutableList<Variant> = mutableListOf()
+    var url: String? = null,
+    @SerializedName("variants") var variants: MutableList<Variant> = mutableListOf()
 ) {
     enum class MediaType {
         @SerializedName("photo") PHOTO,

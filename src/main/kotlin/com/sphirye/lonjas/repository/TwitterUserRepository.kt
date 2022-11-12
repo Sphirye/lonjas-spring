@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TwitterUserRepository : JpaRepository<TwitterUser, Long> {
 
+    fun findById(id: String): TwitterUser
+    fun existsById(id: String): Boolean
+
 }

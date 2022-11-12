@@ -9,9 +9,9 @@ class Tweet (
     @ManyToOne var author: TwitterUser? = null,
 
     @ElementCollection @CollectionTable(name="tweetImages")
-    var images: List<String>? = null,
+    var images: MutableList<String> = mutableListOf(),
 
     @ElementCollection @CollectionTable(name="tweetVideos")
-    var videos: List<String>? = null,
+    var videos: MutableList<String> = mutableListOf(),
 
-)
+    )

@@ -1,9 +1,11 @@
 package com.sphirye.lonjas.service.connector.twitter
 
+import com.sphirye.lonjas.service.connector.twitter.model.Tweets
 import com.sphirye.lonjas.service.connector.twitter.model.User
 import com.sphirye.lonjas.service.tool.RetrofitTool
 import io.github.cdimascio.dotenv.dotenv
 import org.springframework.stereotype.Component
+import retrofit2.Call
 
 @Component
 class TwitterUserConnector (
@@ -11,8 +13,15 @@ class TwitterUserConnector (
 ) {
 
     fun getTwitterUserByUsername(username: String): User {
-        val paramsMap = hashMapOf("user.fields" to "username,profile_image_url")
-        return RetrofitTool.api.getTwitterUserByUsername(username, paramsMap, token).execute().body()!!
+        val params = hashMapOf("user.fields" to "profile_image_url")
+        val response = RetrofitTool.api.getTwitterUserByUsername(username, params, token).execute()
+        return response.body()!!
+    }
+
+    fun getTwitterUserById(id: String): User {
+        val params = hashMapOf("user.fields" to "profile_image_url")
+        val response = RetrofitTool.api.getTwitterUserById(id, params, token).execute()
+        return response.body()!!
     }
 
 }

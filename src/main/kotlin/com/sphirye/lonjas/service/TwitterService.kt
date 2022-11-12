@@ -9,6 +9,7 @@ import com.sphirye.lonjas.service.tool.RetrofitTool
 import io.github.cdimascio.dotenv.dotenv
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import retrofit2.Call
 
 @Service
 class TwitterService (
@@ -18,8 +19,8 @@ class TwitterService (
     @Autowired lateinit var tweetConnector: TweetConnector
     @Autowired lateinit var twitterUserConnector: TwitterUserConnector
 
-    fun getTwitterUserById(id: String) {
-
+    fun getTwitterUserById(id: String): User {
+        return twitterUserConnector.getTwitterUserById(id)
     }
 
     fun getTwitterUserByUsername(username: String): User {
@@ -33,5 +34,6 @@ class TwitterService (
     fun getTweetById(tweetId: String): Tweet {
         return tweetConnector.getTweetById(tweetId)
     }
+
 
 }

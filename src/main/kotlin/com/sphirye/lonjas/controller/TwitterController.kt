@@ -17,8 +17,13 @@ class TwitterController {
     @Autowired lateinit var twitterService: TwitterService
 
     @GetMapping("/public/twitter/user/by/username/{username}")
-    fun getUserByUsername(@PathVariable username: String): ResponseEntity<User> {
+    fun getTwitterUserByUsername(@PathVariable username: String): ResponseEntity<User> {
         return ResponseEntity.status(HttpStatus.OK).body(twitterService.getTwitterUserByUsername(username))
+    }
+
+    @GetMapping("/public/twitter/user/{id}")
+    fun getTwitterUserById(@PathVariable id: String): ResponseEntity<User> {
+        return ResponseEntity.status(HttpStatus.OK).body(twitterService.getTwitterUserById(id))
     }
 
     @GetMapping("/public/twitter/user/{id}/tweets")
