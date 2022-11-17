@@ -9,5 +9,7 @@ interface TwitterUserRepository : JpaRepository<TwitterUser, Long> {
 
     fun findById(id: String): TwitterUser
     fun existsById(id: String): Boolean
+    fun findByUsername(username: String): TwitterUser
+    fun existsByUsername(username: String): Boolean
 
 }

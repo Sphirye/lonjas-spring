@@ -20,6 +20,8 @@ class TweetService {
         val user = twitterUserService.findById(id)
         val tweets = tweetConnector.findAllTweetsByUserId(id)
 
+        println("[Iniciando sincronización] - @${user.username}")
+
         tweets.data.forEach {
             val tweet = Tweet()
 
@@ -29,25 +31,24 @@ class TweetService {
 
             it.attachments?.mediaKeys?.forEach { mediaKey ->
                 val media = tweets.includes.media.find { m -> m.mediaKey == mediaKey }
-
                 if (media != null) {
                     when (media.type) {
                         (Media.MediaType.PHOTO) -> { tweet.images.add(media.url!!) }
-
                         (Media.MediaType.GIF) -> {
                             val highestMedia = media.variants.sortedWith(compareBy { variant -> variant.bitRate }).last()
                             if (highestMedia.contentType == "video/mp4") { tweet.videos.add(highestMedia.url!!) }
+                        }
 
+                        (null) -> {
+                            println(it)
+                            return
                         }
                     }
                 }
             }
-
             tweetRepository.save(tweet)
         }
-
+        println("[Sincronización finalizada] - @${user.username}")
         return
-
     }
-
 }

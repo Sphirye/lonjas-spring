@@ -16,13 +16,15 @@ class UserService(
 ) {
 
     fun init() {
-        create("admin", "1234", "ADMIN")
-        create("mod", "1234", "MOD")
-        create("user", "1234", "USER")
+        if (userRepository.count() <= 0) {
+            create("el_admin", "admin@gmail.com",  "1234","ADMIN")
+            create("el_mod", "mod@gmail.com", "1234","MOD")
+            create("el_user", "user@gmail.com", "1234", "USER")
+        }
     }
 
     @Transactional
-    fun create(username: String, password: String, role: String): User {
+    fun create(username: String, email: String, password: String, role: String): User {
         if (existsByUsername(username)) {
             throw DuplicatedException("User with $username username already exists")
         }
@@ -31,9 +33,10 @@ class UserService(
 
         val user = User(
             username = username,
+            email = email,
             password = passwordEncoder.encode(password),
             authorities = setOf(authority),
-            isActivated = true
+            enabled = true
         )
 
         return userRepository.save(user)
@@ -41,13 +44,18 @@ class UserService(
 
     fun setStatus(id: Long, activated: Boolean): User {
         var user = findById(id)
-        user.isActivated = false
+        user.enabled = false
         return userRepository.save(user)
     }
 
     fun findByUsername(username: String): User {
         if (!existsByUsername(username)) { throw NotFoundException("User $username username not found") }
         return userRepository.findByUsername(username)
+    }
+
+    fun findByEmail(email: String): User {
+        if (!existsByEmail(email)) { throw NotFoundException("User with $email email not found") }
+        return userRepository.findByEmail(email)
     }
 
     fun findById(id: Long): User {
@@ -57,4 +65,5 @@ class UserService(
 
     fun existsByUsername(username: String): Boolean { return userRepository.existsByUsername(username) }
     fun existsById(id: Long): Boolean { return userRepository.existsById(id) }
+    fun existsByEmail(email: String): Boolean { return userRepository.existsByEmail(email) }
 }

@@ -1,10 +1,13 @@
 package com.sphirye.lonjas.entity
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import javax.persistence.*
 
 @Entity
-@Table(name = "`USER`")
+@Table(
+    name = "`USER`",
+    uniqueConstraints = [UniqueConstraint(columnNames = [User_.EMAIL])]
+)
 data class User (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
@@ -12,10 +15,9 @@ data class User (
     var email: String? = null,
     var username: String? = null,
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null,
-    @Column(name = "activated")
-    var isActivated: Boolean = false,
+    var enabled: Boolean = false,
     @ManyToMany @JoinTable(
         name = "user_authority",
         joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],

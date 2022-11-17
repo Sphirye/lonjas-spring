@@ -15,13 +15,12 @@ class AuthController {
 
     @Autowired lateinit var  authService: AuthService
     @Autowired lateinit var userService: UserService
-
     @PostMapping("/public/auth/login")
-    fun login(@RequestParam("username") username: String, @RequestParam("password") password: String): ResponseEntity<LoginResponse> {
-        val user = userService.findByUsername(username)
+    fun login(@RequestParam("email") email: String, @RequestParam("password") password: String): ResponseEntity<LoginResponse> {
+        val user = userService.findByEmail(email)
         authService.matchPasswords(user, password)
         return ResponseEntity.status(HttpStatus.OK).body(
-            LoginResponse(authService.login(username, password), user, user.authorities)
+            LoginResponse(authService.login(email, password), user, user.authorities)
         )
     }
 }

@@ -10,9 +10,14 @@ import java.util.*
 interface UserRepository : JpaRepository<User, Long> {
 
     fun findByUsername(username: String): User
-
     fun existsByUsername(username: String): Boolean
+
+    fun findByEmail(email: String): User
+    fun existsByEmail(email: String): Boolean
 
     @EntityGraph(attributePaths = ["authorities"])
     fun findOneWithAuthoritiesByUsername(username: String): Optional<User>
+
+    @EntityGraph(attributePaths = ["authorities"])
+    fun findOneWithAuthoritiesByEmail(email: String): Optional<User>
 }

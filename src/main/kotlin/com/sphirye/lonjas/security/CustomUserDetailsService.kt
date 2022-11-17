@@ -15,15 +15,26 @@ import java.util.stream.Collectors
 class CustomUserDetailsService(
     private val userRepository: UserRepository
 ) : UserDetailsService {
+
+    //Login by username
+//    @Transactional
+//    override fun loadUserByUsername(username: String): UserDetails {
+//        return userRepository.findOneWithAuthoritiesByUsername(username)
+//            .map { user: com.sphirye.lonjas.entity.User -> createUser(username, user) }
+//            .orElseThrow { UsernameNotFoundException("$username -> not found in database.") }
+//    }
+
     @Transactional
-    override fun loadUserByUsername(username: String): UserDetails {
-        return userRepository.findOneWithAuthoritiesByUsername(username)
-            .map { user: com.sphirye.lonjas.entity.User -> createUser(username, user) }
-            .orElseThrow { UsernameNotFoundException("$username -> not found in database.") }
+    override fun loadUserByUsername(email: String): UserDetails {
+        return userRepository.findOneWithAuthoritiesByEmail(email)
+            .map { user: com.sphirye.lonjas.entity.User -> createUser(email, user) }
+            .orElseThrow { UsernameNotFoundException("$email -> not found in database.") }
     }
 
+
+
     private fun createUser(username: String, user: com.sphirye.lonjas.entity.User): User {
-        if (!user.isActivated) {
+        if (!user.enabled) {
             throw RuntimeException("$username -> Is not activated.")
         }
 

@@ -28,6 +28,22 @@ class TwitterUserService {
         return twitterUserRepository.save(user)
     }
 
+    fun registerByUsername(username: String): TwitterUser {
+        if (existsByUsername(username)) { throw DuplicatedException("Twitter user already exists") }
+
+        val data = twitterUserConnector.getTwitterUserByUsername(username).data!!
+        val user = TwitterUser()
+
+        if (existsById(data.id!!)) { throw DuplicatedException("Twitter user already exists") }
+
+        user.name = data.name
+        user.username = data.username
+        user.profileImageUrl = data.profileImageUrl!!.replace("_normal", "")
+        user.id = data.id
+
+        return twitterUserRepository.save(user)
+    }
+
     fun sync(id: String): TwitterUser {
 
         val user = findById(id)
@@ -47,6 +63,13 @@ class TwitterUserService {
 
     fun existsById(id: String): Boolean {
         return twitterUserRepository.existsById(id)
+    }
+
+    fun findByUsername(username: String): TwitterUser {
+        return twitterUserRepository.findByUsername(username)
+    }
+    fun existsByUsername(username: String): Boolean {
+        return twitterUserRepository.existsByUsername(username)
     }
 
 }

@@ -1,29 +1,37 @@
 package com.sphirye.lonjas.config
 
-import com.sphirye.lonjas.service.AuthorityService
-import com.sphirye.lonjas.service.UserService
+import com.sphirye.lonjas.entity.twitter.TwitterUser
+import com.sphirye.lonjas.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
 @Component
-class PopulateConfig(
-//    private val artistService: ArtistService,
-//    private val postService: PostService,
-//    private val categoryService: CategoryService,
-//    private val characterService: CharacterService,
-//    private val authorityService: AuthorityService,
-//    private val userService: UserService,
-//    private val tagService: TagService,
-) {
+class PopulateConfig {
 
     @Autowired lateinit var authorityService: AuthorityService
     @Autowired lateinit var userService: UserService
+    @Autowired lateinit var twitterUserService: TwitterUserService
+    @Autowired lateinit var tweetService: TweetService
+    @Autowired lateinit var twitterService: TwitterService
+    @Autowired lateinit var artistService: ArtistService
 
     //Mocked data, remove before mounting to production
     @PostConstruct
     fun initDatabase() {
+
+        val ids = listOf(
+//            "1178694351624572931",
+            "1294964657841672193",
+//            "873217529514082304"
+        )
+
         authorityService.init()
         userService.init()
+
+        ids.forEach {
+            artistService.createFromTwitter(it)
+            tweetService.syncUserTweets(it)
+        }
     }
 }

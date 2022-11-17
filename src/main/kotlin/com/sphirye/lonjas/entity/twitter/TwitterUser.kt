@@ -1,5 +1,6 @@
 package com.sphirye.lonjas.entity.twitter
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.OneToMany
@@ -10,5 +11,6 @@ class TwitterUser (
     var name: String? = null,
     var username: String? = null,
     var profileImageUrl: String? = null,
-    @OneToMany var tweets: MutableList<Tweet> = mutableListOf()
+    @OneToMany @JsonIgnore
+    var tweets: MutableList<Tweet> = mutableListOf()
 )

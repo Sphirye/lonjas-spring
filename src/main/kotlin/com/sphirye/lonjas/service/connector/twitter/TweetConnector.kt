@@ -47,8 +47,6 @@ class TweetConnector(
         var count: Int = 0
         var finished: Boolean = false
 
-        println("Iniciando sincronización.")
-
         while (!finished) {
             val response = findPageableTweetsByUserId(userId, nextToken)
             count += 1
@@ -61,8 +59,6 @@ class TweetConnector(
             nextToken = response.meta!!.nextToken
             finished = (response.meta!!.nextToken == null)
         }
-
-        println("La sincronización finalizo con ${count + 1} peticiones en total.")
 
         return tweets
     }
