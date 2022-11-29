@@ -1,4 +1,4 @@
-package com.sphirye.lonjas.service
+package com.sphirye.lonjas.service.twitter
 
 import com.sphirye.lonjas.service.connector.twitter.TweetConnector
 import com.sphirye.lonjas.service.connector.twitter.TwitterUserConnector

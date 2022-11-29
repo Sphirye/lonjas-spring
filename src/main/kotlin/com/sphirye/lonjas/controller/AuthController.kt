@@ -6,6 +6,7 @@ import com.sphirye.lonjas.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -22,5 +23,10 @@ class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(
             LoginResponse(authService.login(email, password), user, user.authorities)
         )
+    }
+
+    @GetMapping("/api/auth/check")
+    fun authCheck(): ResponseEntity<Void> {
+        return ResponseEntity.status(HttpStatus.OK).body(null)
     }
 }

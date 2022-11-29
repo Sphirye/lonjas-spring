@@ -3,11 +3,12 @@ package com.sphirye.lonjas.controller
 import com.sphirye.lonjas.service.connector.twitter.model.Tweet
 import com.sphirye.lonjas.service.connector.twitter.model.Tweets
 import com.sphirye.lonjas.service.connector.twitter.model.User
-import com.sphirye.lonjas.service.TwitterService
+import com.sphirye.lonjas.service.twitter.TwitterService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 

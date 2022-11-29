@@ -15,5 +15,4 @@ class Tweet (
 
     @ElementCollection @CollectionTable(name="tweetVideos")
     var videos: MutableList<String> = mutableListOf(),
-
-    )
+)

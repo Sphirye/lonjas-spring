@@ -1,4 +1,4 @@
-package com.sphirye.lonjas.service
+package com.sphirye.lonjas.service.twitter
 
 import com.sphirye.lonjas.config.exception.DuplicatedException
 import com.sphirye.lonjas.config.exception.NotFoundException
@@ -22,6 +22,7 @@ class TwitterUserService {
 
         user.name = data.name
         user.username = data.username
+        user.description = data.description
         user.profileImageUrl = data.profileImageUrl!!.replace("_normal", "")
         user.id = data.id
 

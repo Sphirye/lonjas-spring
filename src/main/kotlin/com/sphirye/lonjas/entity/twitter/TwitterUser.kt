@@ -11,6 +11,7 @@ class TwitterUser (
     var name: String? = null,
     var username: String? = null,
     var profileImageUrl: String? = null,
+    var description: String? = null,
     @OneToMany @JsonIgnore
     var tweets: MutableList<Tweet> = mutableListOf()
 )

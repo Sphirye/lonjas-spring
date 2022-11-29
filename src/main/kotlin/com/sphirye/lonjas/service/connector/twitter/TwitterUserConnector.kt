@@ -13,13 +13,13 @@ class TwitterUserConnector (
 ) {
 
     fun getTwitterUserByUsername(username: String): User {
-        val params = hashMapOf("user.fields" to "profile_image_url")
+        val params = hashMapOf("user.fields" to "profile_image_url,description")
         val response = RetrofitTool.api.getTwitterUserByUsername(username, params, token).execute()
         return response.body()!!
     }
 
     fun getTwitterUserById(id: String): User {
-        val params = hashMapOf("user.fields" to "profile_image_url")
+        val params = hashMapOf("user.fields" to "profile_image_url,description")
         val response = RetrofitTool.api.getTwitterUserById(id, params, token).execute()
         return response.body()!!
     }

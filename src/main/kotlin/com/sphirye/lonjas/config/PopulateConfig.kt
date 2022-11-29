@@ -1,7 +1,9 @@
 package com.sphirye.lonjas.config
 
-import com.sphirye.lonjas.entity.twitter.TwitterUser
 import com.sphirye.lonjas.service.*
+import com.sphirye.lonjas.service.twitter.TweetService
+import com.sphirye.lonjas.service.twitter.TwitterService
+import com.sphirye.lonjas.service.twitter.TwitterUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
@@ -21,8 +23,8 @@ class PopulateConfig {
     fun initDatabase() {
 
         val ids = listOf(
-//            "1178694351624572931",
-            "1294964657841672193",
+            "1178694351624572931",
+//            "1294964657841672193",
 //            "873217529514082304"
         )
 
