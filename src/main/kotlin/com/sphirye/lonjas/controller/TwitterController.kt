@@ -17,6 +17,8 @@ class TwitterController {
 
     @Autowired lateinit var twitterService: TwitterService
 
+    //TODO: Replace all of this for the stored tweets in repository instead of requesting them
+
     @GetMapping("/public/twitter/user/by/username/{username}")
     fun getTwitterUserByUsername(@PathVariable username: String): ResponseEntity<User> {
         return ResponseEntity.status(HttpStatus.OK).body(twitterService.getTwitterUserByUsername(username))
@@ -31,7 +33,6 @@ class TwitterController {
     fun getUserTweets(@PathVariable id: String): ResponseEntity<Tweets> {
         return ResponseEntity.status(HttpStatus.OK).body(twitterService.getAllUserTweetsById(id))
     }
-
     @GetMapping("/public/twitter/tweet/{id}")
     fun getTweetById(@PathVariable id: String): ResponseEntity<Tweet> {
         return ResponseEntity.status(HttpStatus.OK).body(twitterService.getTweetById(id))

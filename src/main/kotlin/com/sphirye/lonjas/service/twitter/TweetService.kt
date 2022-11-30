@@ -6,6 +6,8 @@ import com.sphirye.lonjas.repository.TweetRepository
 import com.sphirye.lonjas.repository.criteria.TweetCriteria
 import com.sphirye.lonjas.service.connector.twitter.TweetConnector
 import com.sphirye.lonjas.service.connector.twitter.model.Media
+import com.sphirye.lonjas.service.connector.twitter.model.Variant
+import com.sphirye.lonjas.service.tool.RetrofitTool.gson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
@@ -33,19 +35,16 @@ class TweetService {
 
             it.attachments?.mediaKeys?.forEach { mediaKey ->
                 val media = tweets.includes.media.find { m -> m.mediaKey == mediaKey }
-                if (media != null) {
-                    when (media.type) {
-                        (Media.MediaType.PHOTO) -> { tweet.images.add(media.url!!) }
-                        (Media.MediaType.GIF) -> {
-                            val highestMedia = media.variants.sortedWith(compareBy { variant -> variant.bitRate }).last()
-                            if (highestMedia.contentType == "video/mp4") { tweet.videos.add(highestMedia.url!!) }
-                        }
 
-                        (null) -> {
-                            println(it)
-                            return
-                        }
+                when (media?.type) {
+
+                    (Media.MediaType.PHOTO) -> { tweet.images.add(media.url!!) }
+
+                    (Media.MediaType.VIDEO) -> {
+                        val variant = getHighestBitRateMedia(media.variants)
+                        tweet.videos.add(variant.url!!)
                     }
+
                 }
             }
             tweetRepository.save(tweet)
@@ -62,4 +61,9 @@ class TweetService {
         return tweetRepository.getReferenceById(id)
     }
     fun existsById(id: Long): Boolean { return tweetRepository.existsById(id) }
+
+    fun getHighestBitRateMedia(variants: List<Variant>): Variant {
+        var videoMedia: List<Variant> = variants.filter { v -> v.contentType == "video/mp4" }
+        return videoMedia.sortedWith(compareBy { v -> v.bitRate }).last()
+    }
 }

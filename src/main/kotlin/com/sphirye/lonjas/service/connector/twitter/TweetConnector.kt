@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class TweetConnector(
-    private val token: String = "Bearer ${dotenv()["TWITTER_BEARER_TOKEN"]}"
-) {
+class TweetConnector {
 
     fun getTweetById(tweetId: String): Tweet {
         val paramsMap = hashMapOf(
@@ -20,7 +18,7 @@ class TweetConnector(
             "media.fields" to "type,url,variants"
         )
 
-        val response = RetrofitTool.api.getTweetById(tweetId, paramsMap, token).execute()
+        val response = RetrofitTool.api.getTweetById(tweetId, paramsMap).execute()
         return response.body()!!
     }
 
@@ -37,7 +35,7 @@ class TweetConnector(
             paramsMap["pagination_token"] = nextToken
         }
 
-        val response = RetrofitTool.api.getTweetsByUserId(userId, paramsMap, token).execute()
+        val response = RetrofitTool.api.getTweetsByUserId(userId, paramsMap).execute()
         return response.body()!!
     }
 
@@ -52,6 +50,7 @@ class TweetConnector(
             count += 1
 
             response.data.forEach { tweets.data.add(it) }
+
             response.includes.media.forEach {
                 tweets.includes.media.add(it)
             }
