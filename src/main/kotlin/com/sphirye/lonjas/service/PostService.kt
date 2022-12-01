@@ -1,11 +1,16 @@
 package com.sphirye.lonjas.service
 
+import com.sphirye.lonjas.config.exception.BadRequestException
 import com.sphirye.lonjas.config.exception.NotFoundException
+import com.sphirye.lonjas.entity.Artist
 import com.sphirye.lonjas.entity.Post
+import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.repository.PostRepository
+import com.sphirye.lonjas.repository.criteria.PostCriteria
 import com.sphirye.lonjas.service.twitter.TweetService
 import com.sphirye.lonjas.service.twitter.TwitterUserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
 
 @Service
@@ -14,9 +19,21 @@ class PostService {
     @Autowired lateinit var postRepository: PostRepository
     @Autowired lateinit var tweetService: TweetService
     @Autowired lateinit var twitterUserService: TwitterUserService
+    @Autowired lateinit var artistService: ArtistService
+    @Autowired lateinit var postCriteria: PostCriteria
+    fun createFromTweet(artistId: Long, tweetId: String): Post {
+        val tweet: Tweet = tweetService.findById(tweetId)
+        val artist: Artist = artistService.findById(artistId)
 
-    fun createFromTweet(tweetId: String) {
-        val tweet = tweetService
+        if (artist.twitter!!.id != tweet.author!!.id) {
+            throw BadRequestException("The tweet author does not match with the given artist.")
+        }
+
+        val post = Post()
+        post.artist = artist
+        post.tweet = tweet
+
+        return postRepository.save(post)
     }
 
     fun findById(id: Long): Post {
@@ -25,5 +42,9 @@ class PostService {
     }
 
     fun existsById(id: Long): Boolean { return postRepository.existsById(id) }
+
+    fun findFilterPageable(page: Int, size: Int, artistId: Long?): Page<Post> {
+        return postCriteria.findFilterPageable(page, size, artistId)
+    }
 
 }

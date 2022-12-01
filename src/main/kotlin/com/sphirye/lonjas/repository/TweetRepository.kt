@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface TweetRepository : JpaRepository<Tweet, Long> {
 
+    fun getReferenceById(id: String): Tweet
+    fun existsById(id: String): Boolean
+
 }

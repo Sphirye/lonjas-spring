@@ -6,10 +6,10 @@ import javax.persistence.*
 @Entity
 class Post (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long?,
+    var id: Long? = null,
     @ManyToOne
     var artist: Artist? = null,
     @OneToOne
-    val tweet: Tweet? = null,
+    var tweet: Tweet? = null,
     var approved: Boolean = false,
 )

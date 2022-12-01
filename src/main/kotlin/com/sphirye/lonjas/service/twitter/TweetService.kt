@@ -56,11 +56,11 @@ class TweetService {
     fun findFilterPageable(page: Int, size: Int, search: String?, twitterId: String): Page<Tweet> {
         return tweetCriteria.findFilterPageable(page, size, search, twitterId)
     }
-    fun findById(id: Long): Tweet {
+    fun findById(id: String): Tweet {
         if (!existsById(id)) { throw NotFoundException("Tweet not found") }
         return tweetRepository.getReferenceById(id)
     }
-    fun existsById(id: Long): Boolean { return tweetRepository.existsById(id) }
+    fun existsById(id: String): Boolean { return tweetRepository.existsById(id) }
 
     fun getHighestBitRateMedia(variants: List<Variant>): Variant {
         var videoMedia: List<Variant> = variants.filter { v -> v.contentType == "video/mp4" }
