@@ -22,6 +22,7 @@ class PostService {
     @Autowired lateinit var artistService: ArtistService
     @Autowired lateinit var postCriteria: PostCriteria
     fun createFromTweet(artistId: Long, tweetId: String): Post {
+
         val tweet: Tweet = tweetService.findById(tweetId)
         val artist: Artist = artistService.findById(artistId)
 
@@ -30,8 +31,10 @@ class PostService {
         }
 
         val post = Post()
+
         post.artist = artist
         post.tweet = tweet
+        post.type = Post.Type.TWEET
 
         return postRepository.save(post)
     }

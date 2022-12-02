@@ -12,4 +12,7 @@ class Post (
     @OneToOne
     var tweet: Tweet? = null,
     var approved: Boolean = false,
-)
+    var type: Type? = null
+) {
+    enum class Type { TWEET }
+}
