@@ -3,7 +3,6 @@ package com.sphirye.lonjas.controller
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.entity.twitter.TwitterUser
 import com.sphirye.lonjas.service.twitter.TweetService
-import com.sphirye.lonjas.service.twitter.TwitterService
 import com.sphirye.lonjas.service.twitter.TwitterUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class TwitterController {
 
-    @Autowired lateinit var twitterService: TwitterService
     @Autowired lateinit var twitterUserService: TwitterUserService
     @Autowired lateinit var tweetService: TweetService
 

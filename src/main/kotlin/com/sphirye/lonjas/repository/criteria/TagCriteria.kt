@@ -1,0 +1,34 @@
+package com.sphirye.lonjas.repository.criteria
+
+import com.sphirye.lonjas.entity.Tag
+import com.sphirye.lonjas.entity.Tag_
+import com.sphirye.lonjas.service.tool.CriteriaTool
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.stereotype.Repository
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
+import javax.persistence.criteria.Predicate
+
+@Repository
+class TagCriteria {
+
+    @PersistenceContext
+    lateinit var entityManager: EntityManager
+
+    fun findFilterPageable(page: Int, size: Int, search: String?): Page<Tag> {
+
+        val cb = entityManager.criteriaBuilder
+        val query = cb.createQuery(Tag::class.java)
+        val tag = query.from(Tag::class.java)
+        val predicates: MutableList<Predicate> = mutableListOf()
+
+        search?.let {
+            predicates.add(cb.equal(tag.get(Tag_.id), it))
+        }
+
+        query.select(tag).where(cb.and(*predicates.toTypedArray()))
+        return CriteriaTool.page(entityManager, query, page, size)
+    }
+
+}

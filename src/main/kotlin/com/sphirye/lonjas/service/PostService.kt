@@ -5,6 +5,7 @@ import com.sphirye.lonjas.config.exception.DuplicatedException
 import com.sphirye.lonjas.config.exception.NotFoundException
 import com.sphirye.lonjas.entity.Artist
 import com.sphirye.lonjas.entity.Post
+import com.sphirye.lonjas.entity.Tag
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.repository.PostRepository
 import com.sphirye.lonjas.repository.criteria.PostCriteria
@@ -19,10 +20,10 @@ class PostService {
 
     @Autowired lateinit var postRepository: PostRepository
     @Autowired lateinit var tweetService: TweetService
-    @Autowired lateinit var twitterUserService: TwitterUserService
+    @Autowired lateinit var tagService: TagService
     @Autowired lateinit var artistService: ArtistService
     @Autowired lateinit var postCriteria: PostCriteria
-    fun createFromTweet(artistId: Long, tweetId: String): Post {
+    fun createFromTweet(artistId: Long, tweetId: String, tags: List<Long>?): Post {
 
         val tweet: Tweet = tweetService.findById(tweetId)
         val artist: Artist = artistService.findById(artistId)
@@ -41,7 +42,26 @@ class PostService {
         post.tweet = tweet
         post.type = Post.Type.TWEET
 
+        tags?.forEach {
+            val tag = tagService.findById(it)
+            post.tags.add(tag)
+        }
+
         return postRepository.save(post)
+    }
+
+    fun relateTag(id: Long, tagId: Long) {
+        val post = findById(id)
+        val tag = tagService.findById(tagId)
+
+        post.tags.add(tag)
+    }
+
+    fun unrelateTag(id: Long, tagId: Long) {
+        val post = findById(id)
+        val tag = tagService.findById(tagId)
+
+        post.tags.remove(tag)
     }
 
     fun findById(id: Long): Post {

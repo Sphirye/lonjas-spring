@@ -1,5 +1,6 @@
 package com.sphirye.lonjas.repository.criteria
 
+import com.sphirye.lonjas.entity.Artist_
 import com.sphirye.lonjas.entity.Post
 import com.sphirye.lonjas.entity.Post_
 import com.sphirye.lonjas.service.tool.CriteriaTool
@@ -22,7 +23,7 @@ class PostCriteria {
         val predicates: MutableList<Predicate> = mutableListOf()
 
         artistId?.let {
-            predicates.add(cb.equal(post.get(Post_.id), it))
+            predicates.add(cb.equal(post.get(Post_.artist).get(Artist_.id), it))
         }
 
         query.select(post).where(cb.and(*predicates.toTypedArray()))

@@ -12,7 +12,15 @@ class Post (
     @OneToOne
     var tweet: Tweet? = null,
     var approved: Boolean = false,
-    var type: Type? = null
+    var type: Type? = null,
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_tag_post",
+        joinColumns = [JoinColumn(name = "post_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "post_tag_id", referencedColumnName = "id")]
+    )
+    var tags: MutableSet<Tag> = mutableSetOf()
 ) {
     enum class Type { TWEET }
 }

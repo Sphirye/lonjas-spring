@@ -32,7 +32,11 @@ class PostController {
     }
 
     @PostMapping("/api/artist/{artistId}/post/tweet")
-    fun createPostFromTweet(@PathVariable artistId: Long, @RequestParam("tweetId") tweetId: String): Post {
-        return postService.createFromTweet(artistId, tweetId)
+    fun createPostFromTweet(
+        @PathVariable artistId: Long,
+        @RequestParam("tweetId") tweetId: String,
+        @RequestParam(required = false) tags: List<Long>?
+    ): Post {
+        return postService.createFromTweet(artistId, tweetId, tags)
     }
 }

@@ -2,8 +2,6 @@ package com.sphirye.lonjas.config
 
 import com.sphirye.lonjas.service.*
 import com.sphirye.lonjas.service.twitter.TweetService
-import com.sphirye.lonjas.service.twitter.TwitterService
-import com.sphirye.lonjas.service.twitter.TwitterUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
@@ -13,10 +11,9 @@ class PopulateConfig {
 
     @Autowired lateinit var authorityService: AuthorityService
     @Autowired lateinit var userService: UserService
-    @Autowired lateinit var twitterUserService: TwitterUserService
     @Autowired lateinit var tweetService: TweetService
-    @Autowired lateinit var twitterService: TwitterService
     @Autowired lateinit var artistService: ArtistService
+    @Autowired lateinit var tagService: TagService
 
     //Mocked data, remove before mounting to production
     @PostConstruct
@@ -31,6 +28,7 @@ class PopulateConfig {
 
         authorityService.init()
         userService.init()
+        tagService.init()
 
         ids.forEach {
             artistService.createFromTwitter(it)
