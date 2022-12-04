@@ -9,4 +9,6 @@ interface PostRepository : JpaRepository<Post, String> {
     fun getReferenceById(id: Long): Post
     fun existsById(id: Long): Boolean
 
+    fun existsByTweetId(id: String): Boolean
+
 }

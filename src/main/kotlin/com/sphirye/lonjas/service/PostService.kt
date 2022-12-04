@@ -1,6 +1,7 @@
 package com.sphirye.lonjas.service
 
 import com.sphirye.lonjas.config.exception.BadRequestException
+import com.sphirye.lonjas.config.exception.DuplicatedException
 import com.sphirye.lonjas.config.exception.NotFoundException
 import com.sphirye.lonjas.entity.Artist
 import com.sphirye.lonjas.entity.Post
@@ -30,6 +31,10 @@ class PostService {
             throw BadRequestException("The tweet author does not match with the given artist.")
         }
 
+        if (existsByTweetId(tweetId)) {
+            throw DuplicatedException("This tweet has been already registered.")
+        }
+
         val post = Post()
 
         post.artist = artist
@@ -45,6 +50,8 @@ class PostService {
     }
 
     fun existsById(id: Long): Boolean { return postRepository.existsById(id) }
+
+    fun existsByTweetId(tweetId: String): Boolean { return postRepository.existsByTweetId(tweetId) }
 
     fun findFilterPageable(page: Int, size: Int, artistId: Long?): Page<Post> {
         return postCriteria.findFilterPageable(page, size, artistId)
