@@ -20,7 +20,15 @@ class Post (
         joinColumns = [JoinColumn(name = "post_id", referencedColumnName = "id")],
         inverseJoinColumns = [JoinColumn(name = "post_tag_id", referencedColumnName = "id")]
     )
-    var tags: MutableSet<Tag> = mutableSetOf()
+    var tags: MutableSet<Tag> = mutableSetOf(),
+
+    @ManyToMany
+    @JoinTable(
+        name = "rel_category_post",
+        joinColumns = [JoinColumn(name = "post_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "post_category_id", referencedColumnName = "id")]
+    )
+    var categories: MutableSet<Category> = mutableSetOf()
 ) {
     enum class Type { TWEET }
 }

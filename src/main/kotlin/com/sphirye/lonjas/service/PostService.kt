@@ -5,12 +5,10 @@ import com.sphirye.lonjas.config.exception.DuplicatedException
 import com.sphirye.lonjas.config.exception.NotFoundException
 import com.sphirye.lonjas.entity.Artist
 import com.sphirye.lonjas.entity.Post
-import com.sphirye.lonjas.entity.Tag
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.repository.PostRepository
 import com.sphirye.lonjas.repository.criteria.PostCriteria
 import com.sphirye.lonjas.service.twitter.TweetService
-import com.sphirye.lonjas.service.twitter.TwitterUserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
@@ -23,18 +21,14 @@ class PostService {
     @Autowired lateinit var tagService: TagService
     @Autowired lateinit var artistService: ArtistService
     @Autowired lateinit var postCriteria: PostCriteria
-    fun createFromTweet(artistId: Long, tweetId: String, tags: List<Long>?): Post {
+    @Autowired lateinit var categoryService: CategoryService
+    fun createFromTweet(artistId: Long, tweetId: String, tags: List<Long>?, categories: List<Long>?): Post {
 
         val tweet: Tweet = tweetService.findById(tweetId)
         val artist: Artist = artistService.findById(artistId)
 
-        if (artist.twitter!!.id != tweet.author!!.id) {
-            throw BadRequestException("The tweet author does not match with the given artist.")
-        }
-
-        if (existsByTweetId(tweetId)) {
-            throw DuplicatedException("This tweet has been already registered.")
-        }
+        if (artist.twitter!!.id != tweet.author!!.id) throw BadRequestException("The tweet author does not match with the given artist.")
+        if (existsByTweetId(tweetId)) throw DuplicatedException("This tweet has been already registered.")
 
         val post = Post()
 
@@ -45,6 +39,11 @@ class PostService {
         tags?.forEach {
             val tag = tagService.findById(it)
             post.tags.add(tag)
+        }
+
+        categories?.forEach {
+            val category = categoryService.findById(it)
+            post.categories.add(category)
         }
 
         return postRepository.save(post)
