@@ -22,7 +22,9 @@ class PostService {
     @Autowired lateinit var artistService: ArtistService
     @Autowired lateinit var postCriteria: PostCriteria
     @Autowired lateinit var categoryService: CategoryService
-    fun createFromTweet(artistId: Long, tweetId: String, tags: List<Long>?, categories: List<Long>?): Post {
+    @Autowired lateinit var characterService: CharacterService
+
+    fun createFromTweet(artistId: Long, tweetId: String, tags: List<Long>?, categories: List<Long>?, characters: List<Long>?): Post {
 
         val tweet: Tweet = tweetService.findById(tweetId)
         val artist: Artist = artistService.findById(artistId)
@@ -44,6 +46,14 @@ class PostService {
         categories?.forEach {
             val category = categoryService.findById(it)
             post.categories.add(category)
+        }
+
+        characters?.forEach {
+            val character = characterService.findById(it)
+            if (!post.categories.contains(character.category)) {
+                throw BadRequestException("Category: ${character.category!!.name} is not present in the post for the Character: ${character.name}")
+            }
+            post.characters.add(character)
         }
 
         return postRepository.save(post)

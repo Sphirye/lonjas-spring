@@ -20,7 +20,7 @@ class CategoryService {
         if (categoryRepository.count() <= 0) {
             create("touhou")
             create("shantae")
-            create("cookie run")
+            create("cookie_run")
         }
     }
 

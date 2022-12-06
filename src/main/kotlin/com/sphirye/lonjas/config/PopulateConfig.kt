@@ -15,6 +15,7 @@ class PopulateConfig {
     @Autowired lateinit var artistService: ArtistService
     @Autowired lateinit var tagService: TagService
     @Autowired lateinit var categoryService: CategoryService
+    @Autowired lateinit var characterService: CharacterService
 
     //Mocked data, remove before mounting to production
     @PostConstruct
@@ -30,6 +31,7 @@ class PopulateConfig {
         authorityService.init()
         userService.init()
         categoryService.init()
+        characterService.init()
         tagService.init()
 
         ids.forEach {

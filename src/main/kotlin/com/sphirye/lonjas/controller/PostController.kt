@@ -34,8 +34,9 @@ class PostController {
         @PathVariable artistId: Long,
         @RequestParam("tweetId") tweetId: String,
         @RequestParam(required = false) tags: List<Long>?,
-        @RequestParam(required = false) categories: List<Long>?
+        @RequestParam(required = false) categories: List<Long>?,
+        @RequestParam(required = false) characters: List<Long>?
     ): ResponseEntity<Post> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.createFromTweet(artistId, tweetId, tags, categories))
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.createFromTweet(artistId, tweetId, tags, categories, characters))
     }
 }
