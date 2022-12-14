@@ -15,7 +15,7 @@ class PostCriteria {
 
     @PersistenceContext lateinit var entityManager: EntityManager
 
-    fun findFilterPageable(page: Int, size: Int, artistId: Long?): Page<Post> {
+    fun findFilterPageable(page: Int, size: Int, artistId: Long?, public: Boolean? = true): Page<Post> {
 
         val cb = entityManager.criteriaBuilder
         val query = cb.createQuery(Post::class.java)

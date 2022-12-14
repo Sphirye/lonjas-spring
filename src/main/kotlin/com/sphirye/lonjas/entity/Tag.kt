@@ -12,4 +12,5 @@ class Tag (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     var name: String? = null,
+    var enabled: Boolean? = false
 )

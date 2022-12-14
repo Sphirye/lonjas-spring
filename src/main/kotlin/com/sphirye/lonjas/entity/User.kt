@@ -11,10 +11,8 @@ import javax.persistence.*
 data class User (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-
     var email: String? = null,
     var username: String? = null,
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null,
     var enabled: Boolean = false,

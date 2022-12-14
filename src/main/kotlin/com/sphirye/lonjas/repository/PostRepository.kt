@@ -8,7 +8,8 @@ interface PostRepository : JpaRepository<Post, String> {
 
     fun getReferenceById(id: Long): Post
     fun existsById(id: Long): Boolean
-
     fun existsByTweetId(id: String): Boolean
+
+    fun countByTags_Id(id: Long): Long
 
 }
