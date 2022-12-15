@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 plugins {
 	id("org.springframework.boot") version "2.7.3"
 	id("io.spring.dependency-management") version "1.0.13.RELEASE"
-	war
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
@@ -13,7 +12,7 @@ plugins {
 
 group = "com.sphirye.lonjas"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
@@ -41,11 +40,14 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-	// TOOL
-	implementation("io.github.cdimascio:dotenv-kotlin:6.3.1")
+	// RETROFIT
 	implementation("com.squareup.retrofit2:retrofit:2.9.0")
-	implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 	implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+	implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+	implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.0"))
+	implementation("com.squareup.okhttp3:okhttp")
+	implementation("com.squareup.okhttp3:logging-interceptor")
+
 
 	// SECURITY
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -59,7 +61,6 @@ dependencies {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
 
-	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

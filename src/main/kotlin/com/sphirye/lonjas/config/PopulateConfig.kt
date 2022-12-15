@@ -3,6 +3,7 @@ package com.sphirye.lonjas.config
 import com.sphirye.lonjas.service.*
 import com.sphirye.lonjas.service.twitter.TweetService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -16,14 +17,20 @@ class PopulateConfig {
     @Autowired lateinit var tagService: TagService
     @Autowired lateinit var categoryService: CategoryService
     @Autowired lateinit var characterService: CharacterService
+    @Autowired lateinit var propertyConfig: PropertyConfig
+
 
     //Mocked data, remove before mounting to production
     @PostConstruct
     fun initDatabase() {
 
+        propertyConfig.init()
+
+        println(PropertyConfig.TWITTER_TOKEN)
+
         val ids = listOf(
-//            "1178694351624572931",
-            "1403116270908751873",
+            "1178694351624572931",
+//            "1403116270908751873",
 //            "1294964657841672193",
 //            "873217529514082304"
         )

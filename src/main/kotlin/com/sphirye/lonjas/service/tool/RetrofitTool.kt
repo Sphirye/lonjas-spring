@@ -9,6 +9,8 @@ import com.sphirye.lonjas.service.connector.twitter.tool.TwitterApi
 import com.sphirye.lonjas.service.connector.twitter.adapter.TweetAdapter
 import com.sphirye.lonjas.service.connector.twitter.adapter.TweetsAdapter
 import com.sphirye.lonjas.service.connector.twitter.adapter.UserAdapter
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -18,19 +20,22 @@ object RetrofitTool {
     var gson = Gson()
 
     init {
-        val gsonBuilder = GsonBuilder()
 
-            // Twitter
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        val client = OkHttpClient.Builder().addInterceptor(interceptor).build()
+
+        val gsonBuilder = GsonBuilder()
             .registerTypeAdapter(Tweet::class.java, TweetAdapter())
             .registerTypeAdapter(Tweets::class.java, TweetsAdapter())
             .registerTypeAdapter(User::class.java, UserAdapter())
-
             .create()
 
         val gsonConverter = GsonConverterFactory.create(gsonBuilder)
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.twitter.com")
             .addConverterFactory(gsonConverter)
+//            .client(client)
             .build()
 
         api = retrofit.create(TwitterApi::class.java)

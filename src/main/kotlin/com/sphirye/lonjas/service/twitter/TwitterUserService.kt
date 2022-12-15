@@ -39,6 +39,7 @@ class TwitterUserService {
 
         user.name = data.name
         user.username = data.username
+        user.description = data.description
         user.profileImageUrl = data.profileImageUrl!!.replace("_normal", "")
         user.id = data.id
 
@@ -46,12 +47,12 @@ class TwitterUserService {
     }
 
     fun sync(id: String): TwitterUser {
-
         val user = findById(id)
         val data = twitterUserConnector.getTwitterUserById(id).data!!
 
         user.name = data.name
         user.username = data.username
+        user.description = data.description
         user.profileImageUrl = data.profileImageUrl!!.replace("_normal", "")
 
         return twitterUserRepository.save(user)

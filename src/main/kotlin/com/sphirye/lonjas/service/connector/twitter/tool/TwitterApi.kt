@@ -1,16 +1,16 @@
 package com.sphirye.lonjas.service.connector.twitter.tool
 
+import com.sphirye.lonjas.config.PropertyConfig
 import com.sphirye.lonjas.service.connector.twitter.model.Tweet
 import com.sphirye.lonjas.service.connector.twitter.model.Tweets
 import com.sphirye.lonjas.service.connector.twitter.model.User
-import io.github.cdimascio.dotenv.dotenv
 import retrofit2.Call
 import retrofit2.http.*
 
 interface TwitterApi {
 
     companion object {
-        private val TWITTER_TOKEN: String = "Bearer ${dotenv()["TWITTER_BEARER_TOKEN"]}"
+        private val TWITTER_TOKEN: String = "Bearer ${PropertyConfig.TWITTER_TOKEN}"
     }
 
     @GET("/2/users/by/username/{username}")

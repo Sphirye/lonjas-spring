@@ -4,6 +4,7 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
+@Table(name = "`CHARACTER`")
 class Character (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,

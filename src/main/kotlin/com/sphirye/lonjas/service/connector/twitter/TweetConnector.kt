@@ -3,9 +3,6 @@ package com.sphirye.lonjas.service.connector.twitter
 import com.sphirye.lonjas.service.connector.twitter.model.Tweet
 import com.sphirye.lonjas.service.connector.twitter.model.Tweets
 import com.sphirye.lonjas.service.tool.RetrofitTool
-import com.sphirye.lonjas.service.tool.RetrofitTool.gson
-import io.github.cdimascio.dotenv.dotenv
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
