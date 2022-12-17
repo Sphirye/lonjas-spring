@@ -15,17 +15,17 @@ class TwitterUserController {
 
     @Autowired lateinit var twitterUserService: TwitterUserService
 
-    @PostMapping("/api/twitter/register/{id}")
+    @PostMapping("/api/twitter/user/register/{id}")
     fun registerTwitterUser(@PathVariable id: String): ResponseEntity<TwitterUser> {
         return ResponseEntity.status(HttpStatus.CREATED).body(twitterUserService.register(id))
     }
 
-    @PostMapping("/api/twitter/register/by/username/{username}")
+    @PostMapping("/api/twitter/user/register/by/username/{username}")
     fun registerTwitterUserByUsername(@PathVariable username: String): ResponseEntity<TwitterUser> {
         return ResponseEntity.status(HttpStatus.CREATED).body(twitterUserService.registerByUsername(username))
     }
 
-    @PatchMapping("/public/twitter/user/{id}/sync")
+    @PatchMapping("/api/twitter/user/{id}/sync")
     fun syncTwitterUser(@PathVariable id: String): ResponseEntity<TwitterUser> {
         return ResponseEntity.status(HttpStatus.OK).body(twitterUserService.sync(id))
     }

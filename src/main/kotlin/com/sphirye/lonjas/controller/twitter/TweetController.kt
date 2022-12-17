@@ -15,7 +15,7 @@ class TweetController {
     @Autowired lateinit var twitterUserService: TwitterUserService
     @Autowired lateinit var tweetService: TweetService
 
-    @PatchMapping("/public/twitter/user/{id}/tweet/sync")
+    @PatchMapping("/api/twitter/user/{id}/tweet/sync")
     fun syncUserTweets(@PathVariable id: String): ResponseEntity<Unit> {
         return ResponseEntity.status(HttpStatus.OK).body(tweetService.syncUserTweets(id))
     }

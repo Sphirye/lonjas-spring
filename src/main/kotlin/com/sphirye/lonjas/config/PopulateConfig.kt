@@ -18,7 +18,7 @@ class PopulateConfig {
     @Autowired lateinit var categoryService: CategoryService
     @Autowired lateinit var characterService: CharacterService
     @Autowired lateinit var propertyConfig: PropertyConfig
-
+    @Value("\${spring.datasource.url}") lateinit var url: String
 
     //Mocked data, remove before mounting to production
     @PostConstruct
@@ -26,13 +26,11 @@ class PopulateConfig {
 
         propertyConfig.init()
 
+        println("Apuntando a: ${url}")
         println(PropertyConfig.TWITTER_TOKEN)
 
         val ids = listOf(
-            "1178694351624572931",
-//            "1403116270908751873",
-//            "1294964657841672193",
-//            "873217529514082304"
+            "1178694351624572931"
         )
 
         authorityService.init()

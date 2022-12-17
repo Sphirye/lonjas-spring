@@ -68,10 +68,25 @@ class TwitterUserService {
     }
 
     fun findByUsername(username: String): TwitterUser {
+        if (!existsByUsername(username)) { throw NotFoundException("User $username not found") }
         return twitterUserRepository.findByUsername(username)
     }
     fun existsByUsername(username: String): Boolean {
         return twitterUserRepository.existsByUsername(username)
+    }
+
+    fun retrieveByUsername(username: String): TwitterUser {
+        val data = twitterUserConnector.getTwitterUserByUsername(username).data!!
+
+        val twitterUser = TwitterUser()
+
+        twitterUser.id = data.id
+        twitterUser.name = data.name
+        twitterUser.username = data.username
+        twitterUser.description = data.description
+        twitterUser.profileImageUrl = data.profileImageUrl
+
+        return twitterUser
     }
 
 }

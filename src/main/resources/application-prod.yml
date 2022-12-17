@@ -10,8 +10,9 @@ spring:
     active:
 
   datasource:
-    url: jdbc:h2:mem:test;
+    url: jdbc:mysql://lonjasdb:3306/lonjasdb
     username: root
+    password: 1234
 
   h2:
     console:

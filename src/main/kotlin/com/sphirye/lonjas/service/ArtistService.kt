@@ -21,14 +21,12 @@ class ArtistService {
     @Autowired lateinit var artistCriteria: ArtistCriteria
     @Autowired lateinit var tweetService: TweetService
 
-    @Transactional
     fun createFromTwitter(twitterId: String): Artist {
         if (existsByTwitterId(twitterId)) { throw DuplicatedException("This user has already been linked to another artist entity.") }
         val artist = Artist()
         artist.twitter = twitterUserService.register(twitterId)
         return artistRepository.save(artist)
     }
-
 
     fun findById(id: Long): Artist {
         if (!existsById(id)) { throw NotFoundException("Artist not found") }

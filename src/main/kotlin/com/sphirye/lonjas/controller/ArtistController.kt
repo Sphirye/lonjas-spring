@@ -33,10 +33,11 @@ class ArtistController {
 
     // Twitter
 
-    @PostMapping("/public/artist/create/twitter")
+    @PostMapping("/api/artist/create/twitter")
     fun createFromTwitter(@RequestParam twitterId: String): ResponseEntity<Artist> {
         return ResponseEntity.status(HttpStatus.OK).body(artistService.createFromTwitter(twitterId))
     }
+
     @GetMapping("/api/artist/{id}/tweets")
     fun findArtistTweets(
         @PathVariable id: Long,

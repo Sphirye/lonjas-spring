@@ -9,31 +9,30 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class TwitterController {
+class TwitterApiController {
 
     @Autowired lateinit var twitterUserService: TwitterUserService
     @Autowired lateinit var tweetService: TweetService
 
     //TODO: Replace all of this for the stored tweets in repository instead of requesting them
 
-    @GetMapping("/public/twitter/user/by/username/{username}")
+    @GetMapping("/api/twitter-api/user/by/username/{username}")
     fun getTwitterUserByUsername(@PathVariable username: String): ResponseEntity<TwitterUser> {
-        return ResponseEntity.status(HttpStatus.OK).body(twitterUserService.findByUsername(username))
+        return ResponseEntity.status(HttpStatus.OK).body(twitterUserService.retrieveByUsername(username))
     }
-
-    @GetMapping("/public/twitter/user/{id}")
-    fun getTwitterUserById(@PathVariable id: String): ResponseEntity<TwitterUser> {
-        return ResponseEntity.status(HttpStatus.OK).body(twitterUserService.findById(id))
-    }
-
-    @GetMapping("/public/twitter/tweet/{id}")
-    fun getTweetById(@PathVariable id: String): ResponseEntity<Tweet> {
-        return ResponseEntity.status(HttpStatus.OK).body(tweetService.findById(id))
-    }
+//
+//    @GetMapping("/api/twitter/user/{id}")
+//    fun getTwitterUserById(@PathVariable id: String): ResponseEntity<TwitterUser> {
+//        return ResponseEntity.status(HttpStatus.OK).body(twitterUserService.findById(id))
+//    }
+//
+//    @GetMapping("/api/twitter/tweet/{id}")
+//    fun getTweetById(@PathVariable id: String): ResponseEntity<Tweet> {
+//        return ResponseEntity.status(HttpStatus.OK).body(tweetService.findById(id))
+//    }
 
 
 //    @GetMapping("/public/twitter-api/user/by/username/{username}")

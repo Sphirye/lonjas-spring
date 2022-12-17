@@ -36,4 +36,9 @@ class ExceptionConfig {
     fun unauthorizedException(e: Exception): ResponseEntity<*>? {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body<Any>(MessageError(e.message))
     }
+
+    @ExceptionHandler(NullResponseException::class)
+    fun nullResponseException(e: Exception): ResponseEntity<*>? {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<Any>(MessageError(e.message))
+    }
 }
