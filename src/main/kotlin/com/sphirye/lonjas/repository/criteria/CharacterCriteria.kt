@@ -20,9 +20,15 @@ class CharacterCriteria {
         val character = query.from(Character::class.java)
         val predicates: MutableList<Predicate> = mutableListOf()
 
-        search?.let {
-            predicates.add(cb.like(character.get(Character_.name), it))
-            predicates.add(cb.like(character.get(Character_.category).get(Category_.name), it))
+        if (!search.isNullOrEmpty()) {
+            val word = search.trim().lowercase()
+            val like = "%$word%"
+            predicates.add(
+                cb.or(
+                    cb.like(cb.lower(character.get(Character_.name)), like),
+                    cb.like(cb.lower(character.get(Character_.category).get(Category_.name)), like)
+                )
+            )
         }
 
         query.select(character).where(cb.and(*predicates.toTypedArray()))

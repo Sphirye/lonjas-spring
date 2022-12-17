@@ -1,5 +1,6 @@
 package com.sphirye.lonjas.repository.criteria
 
+import com.sphirye.lonjas.entity.Category_
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.entity.twitter.Tweet_
 import com.sphirye.lonjas.entity.twitter.TwitterUser_
@@ -21,6 +22,16 @@ class TweetCriteria {
         val query = cb.createQuery(Tweet::class.java)
         val tweet = query.from(Tweet::class.java)
         val predicates: MutableList<Predicate> = mutableListOf()
+
+        if (!search.isNullOrEmpty()) {
+            val word = search.trim().lowercase()
+            val like = "%$word%"
+            predicates.add(
+                cb.or(
+                    cb.like(cb.lower(tweet.get(Tweet_.text)), like)
+                )
+            )
+        }
 
         query.select(tweet).where(
             cb.and(*predicates.toTypedArray(),
