@@ -12,6 +12,7 @@ class Post (
     @OneToOne
     var tweet: Tweet? = null,
     var approved: Boolean = false,
+    @Enumerated(EnumType.STRING)
     var type: Type? = null,
 
     @ManyToMany

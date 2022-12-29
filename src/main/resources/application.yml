@@ -3,6 +3,9 @@ spring:
     name: lonjas
     id: com.sphirye.lonjas
 
+  main:
+    allow-circular-references: true
+
   config:
     import: optional:file:.env[.properties]
 

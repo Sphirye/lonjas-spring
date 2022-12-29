@@ -9,5 +9,6 @@ interface TweetRepository : JpaRepository<Tweet, Long> {
 
     fun getReferenceById(id: String): Tweet
     fun existsById(id: String): Boolean
+    fun deleteById(id: String)
 
 }

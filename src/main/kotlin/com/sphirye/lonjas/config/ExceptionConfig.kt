@@ -41,4 +41,9 @@ class ExceptionConfig {
     fun nullResponseException(e: Exception): ResponseEntity<*>? {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body<Any>(MessageError(e.message))
     }
+
+    @ExceptionHandler(ConflictException::class)
+    fun conflictException(e: Exception): ResponseEntity<*>? {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body<Any>(MessageError(e.message))
+    }
 }

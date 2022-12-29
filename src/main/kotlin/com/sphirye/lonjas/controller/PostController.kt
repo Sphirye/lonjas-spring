@@ -17,7 +17,7 @@ class PostController {
 
     @Autowired lateinit var postService: PostService
 
-    @GetMapping("/public/artist/{artistId}/post")
+    @GetMapping("/api/artist/{artistId}/post")
     fun findPostsByArtist(
         @PathVariable artistId: Long,
         @RequestParam page: Int,
@@ -29,6 +29,11 @@ class PostController {
             .body(result.content)
     }
 
+    @GetMapping("/public/post/{id}")
+    fun getPostById(@PathVariable id: Long): ResponseEntity<Post> {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.findById(id))
+    }
+
     @PostMapping("/api/artist/{artistId}/post/tweet")
     fun createPostFromTweet(
         @PathVariable artistId: Long,
@@ -37,6 +42,8 @@ class PostController {
         @RequestParam(required = false) categories: List<Long>?,
         @RequestParam(required = false) characters: List<Long>?
     ): ResponseEntity<Post> {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.createFromTweet(artistId, tweetId, tags, categories, characters))
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            postService.createFromTweet(artistId, tweetId, tags, categories, characters)
+        )
     }
 }

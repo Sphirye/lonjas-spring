@@ -19,7 +19,7 @@ class TagService {
 
     fun init() {
         if (tagRepository.count() <= 0) {
-            for (i in 1..10) { create("tag_$i") }
+            for (i in 1..100) { create("tag_$i") }
         }
     }
 
