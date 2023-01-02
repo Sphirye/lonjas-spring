@@ -17,10 +17,23 @@ class CategoryController {
     @Autowired lateinit var categoryService: CategoryService
 
     @GetMapping("/public/category")
-    fun findCategories(
+    fun findPublicCategories(
         @RequestParam page: Int,
         @RequestParam size: Int,
         @RequestParam(required = false) search: String?
+    ): ResponseEntity<List<Category>> {
+        val result = categoryService.findFilterPageable(page, size, search)
+        return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.X_TOTAL_COUNT_HEADER, result.totalElements.toString())
+            .body(result.content)
+    }
+
+    @GetMapping("/api/category")
+    fun findCategories(
+        @RequestParam page: Int,
+        @RequestParam size: Int,
+        @RequestParam(required = false) search: String?,
+        @RequestParam(required = false) active: Boolean?
     ): ResponseEntity<List<Category>> {
         val result = categoryService.findFilterPageable(page, size, search)
         return ResponseEntity.status(HttpStatus.OK)

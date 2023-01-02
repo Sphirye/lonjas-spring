@@ -8,10 +8,12 @@ import com.sphirye.lonjas.entity.Post
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.repository.PostRepository
 import com.sphirye.lonjas.repository.criteria.PostCriteria
+import com.sphirye.lonjas.service.tool.RetrofitTool.gson
 import com.sphirye.lonjas.service.twitter.TweetService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 @Service
 class PostService {
@@ -59,6 +61,37 @@ class PostService {
         return postRepository.save(post)
     }
 
+    @Transactional
+    fun update(id: Long, request: Post): Post {
+        val post = findById(id)
+
+        post.tags.clear()
+        post.categories.clear()
+        post.characters.clear()
+
+        request.categories.forEach {
+            val category = categoryService.findById(it.id!!)
+            if (!post.categories.contains(category)) { post.categories.add(category) }
+        }
+
+        request.characters.forEach {
+            val character = characterService.findById(it.id!!)
+
+            if (!post.categories.contains(character.category)) {
+                throw BadRequestException("Category: ${character.category!!.name} is not present in the post for the Character: ${character.name}")
+            }
+
+            if (!post.characters.contains(character)) { post.characters.add(character) }
+        }
+
+        request.tags.forEach {
+            val tag = tagService.findById(it.id!!)
+            if (!post.tags.contains(tag)) { post.tags.add(tag) }
+        }
+
+        return postRepository.save(post)
+    }
+
     fun relateTag(id: Long, tagId: Long) {
         val post = findById(id)
         val tag = tagService.findById(tagId)
@@ -72,7 +105,6 @@ class PostService {
 
         post.tags.remove(tag)
     }
-
     fun findById(id: Long): Post {
         if (!existsById(id)) { throw NotFoundException("Post not found") }
         return postRepository.getReferenceById(id)
@@ -84,6 +116,11 @@ class PostService {
 
     fun findFilterPageable(page: Int, size: Int, artistId: Long?): Page<Post> {
         return postCriteria.findFilterPageable(page, size, artistId)
+    }
+
+    fun delete(id: Long) {
+        val post = findById(id)
+        return postRepository.delete(post)
     }
 
 }

@@ -20,8 +20,15 @@ class CategoryCriteria {
         val category = query.from(Category::class.java)
         val predicates: MutableList<Predicate> = mutableListOf()
 
-        search?.let {
-            predicates.add(cb.like(category.get(Category_.name), it))
+
+        if (!search.isNullOrEmpty()) {
+            val word = search.trim().lowercase()
+            val like = "%$word%"
+            predicates.add(
+                cb.or(
+                    cb.like(cb.lower(category.get(Category_.name)), like)
+                )
+            )
         }
 
         query.select(category).where(cb.and(*predicates.toTypedArray()))

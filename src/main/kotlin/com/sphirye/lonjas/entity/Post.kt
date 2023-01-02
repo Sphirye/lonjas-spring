@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 class Post (
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long? = null,
     @ManyToOne
     var artist: Artist? = null,
