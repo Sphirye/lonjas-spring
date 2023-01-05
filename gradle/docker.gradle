@@ -1,0 +1,20 @@
+task buildDocker(dependsOn: 'build') {
+    doLast {
+
+        exec {
+            commandLine 'docker', 'build', '-f', 'gradle/Dockerfile', '-t', 'lonjas-spring', '.'
+        }
+
+        def springProfile = 'SPRING_PROFILES_ACTIVE=' + String.valueOf(profile)
+
+        exec {
+            commandLine 'docker', 'run', '-d',
+                    '--name', 'lonjas-spring',
+                    '--network', 'lonjas-spring',
+                    '-p', '8080:8080',
+                    '--restart', 'always',
+                    '-e', springProfile, 'lonjas-spring'
+        }
+
+    }
+}
