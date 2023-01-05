@@ -10,7 +10,7 @@ task buildDocker(dependsOn: 'build') {
         exec {
             commandLine 'docker', 'run', '-d',
                     '--name', 'lonjas-spring',
-                    '--network', 'lonjas-spring',
+                    '--network', 'lonjas',
                     '-p', '8080:8080',
                     '--restart', 'always',
                     '-e', springProfile, 'lonjas-spring'
