@@ -15,6 +15,5 @@ task buildDocker(dependsOn: 'build') {
                     '--restart', 'always',
                     '-e', springProfile, 'lonjas-spring'
         }
-
     }
 }

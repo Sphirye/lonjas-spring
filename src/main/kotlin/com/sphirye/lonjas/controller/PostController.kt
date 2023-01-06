@@ -22,14 +22,32 @@ import org.springframework.web.bind.annotation.RestController
 class PostController {
 
     @Autowired lateinit var postService: PostService
+    @GetMapping("/public/post")
+    fun findPublicPosts(
+        @RequestParam page: Int, @RequestParam size: Int,
+        @RequestParam(required = false) search: String?,
+        @RequestParam(required = false) artistId: Long?,
+        @RequestParam(required = false) categoryIds: List<Long>?,
+        @RequestParam(required = false) characterIds: List<Long>?,
+        @RequestParam(required = false) tagIds: List<Long>?
+    ): ResponseEntity<MutableList<Post>> {
+        val result = postService.findFilterPageable2(page, size, search, artistId, categoryIds, characterIds, tagIds, true)
+        return ResponseEntity.status(HttpStatus.OK)
+            .header(Constants.X_TOTAL_COUNT_HEADER, result.totalElements.toString())
+            .body(result.content)
+    }
 
-    @GetMapping("/api/artist/{artistId}/post")
-    fun findPostsByArtist(
-        @PathVariable artistId: Long,
-        @RequestParam page: Int,
-        @RequestParam size: Int,
-    ): ResponseEntity<List<Post>> {
-        val result = postService.findFilterPageable(page, size, artistId)
+    @GetMapping("/api/post")
+    fun findPosts(
+        @RequestParam page: Int, @RequestParam size: Int,
+        @RequestParam(required = false) search: String?,
+        @RequestParam(required = false) artistId: Long?,
+        @RequestParam(required = false) categoryIds: List<Long>?,
+        @RequestParam(required = false) characterIds: List<Long>?,
+        @RequestParam(required = false) tagIds: List<Long>?,
+        @RequestParam(required = false) enabled: Boolean?,
+    ): ResponseEntity<MutableList<Post>> {
+        val result = postService.findFilterPageable2(page, size, search, artistId, categoryIds, characterIds, tagIds, enabled)
         return ResponseEntity.status(HttpStatus.OK)
             .header(Constants.X_TOTAL_COUNT_HEADER, result.totalElements.toString())
             .body(result.content)

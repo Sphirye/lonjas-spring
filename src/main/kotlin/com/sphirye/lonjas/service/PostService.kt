@@ -8,8 +8,8 @@ import com.sphirye.lonjas.entity.Post
 import com.sphirye.lonjas.entity.twitter.Tweet
 import com.sphirye.lonjas.repository.PostRepository
 import com.sphirye.lonjas.repository.criteria.PostCriteria
-import com.sphirye.lonjas.service.tool.RetrofitTool.gson
 import com.sphirye.lonjas.service.twitter.TweetService
+import jdk.jfr.Enabled
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.stereotype.Service
@@ -115,7 +115,14 @@ class PostService {
     fun existsByTweetId(tweetId: String): Boolean { return postRepository.existsByTweetId(tweetId) }
 
     fun findFilterPageable(page: Int, size: Int, artistId: Long?): Page<Post> {
-        return postCriteria.findFilterPageable(page, size, artistId)
+        return postCriteria.findFilterPageableByArtis(page, size, artistId)
+    }
+
+    fun findFilterPageable2(
+        page: Int, size: Int, search: String?, artistId: Long?, categoryIds: List<Long>?,
+        characterIds: List<Long>?, tagIds: List<Long>?, enabled: Boolean?
+    ): Page<Post> {
+        return postCriteria.findFilterPageable(page, size, search, artistId, categoryIds, characterIds, tagIds, enabled)
     }
 
     fun delete(id: Long) {

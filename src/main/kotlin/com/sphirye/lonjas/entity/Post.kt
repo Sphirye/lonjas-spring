@@ -11,7 +11,7 @@ class Post (
     var artist: Artist? = null,
     @OneToOne
     var tweet: Tweet? = null,
-    var approved: Boolean = false,
+    var enabled: Boolean = false,
     @Enumerated(EnumType.STRING)
     var type: Type? = null,
 
