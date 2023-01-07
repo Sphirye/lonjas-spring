@@ -31,6 +31,14 @@ class TagService {
         return tagRepository.save(tag)
     }
 
+    fun update(id: Long, request: Tag): Tag {
+        val tag = findById(id)
+        request.name?.let { tag.name = request.name }
+        request.enabled?.let { tag.enabled = request.enabled }
+
+        return tagRepository.save(tag)
+    }
+
     fun existsByName(name: String): Boolean { return tagRepository.existsByName(name) }
 
     fun findById(id: Long): Tag {
@@ -49,10 +57,6 @@ class TagService {
             tag.enabled = false
             tagRepository.save(tag)
         }
-    }
-
-    fun findPublicFilterPageable(page: Int, size: Int, search: String?): Page<Tag> {
-        return tagCriteria.findPublicFilterPageable(page, size, search)
     }
 
     fun findFilterPageable(page: Int, size: Int, search: String?, enabled: Boolean?): Page<Tag> {

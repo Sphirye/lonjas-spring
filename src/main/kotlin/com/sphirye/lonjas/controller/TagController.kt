@@ -3,6 +3,7 @@ package com.sphirye.lonjas.controller
 import com.sphirye.lonjas.entity.Tag
 import com.sphirye.lonjas.service.TagService
 import com.sphirye.lonjas.service.tool.Constants
+import com.sphirye.lonjas.service.tool.RetrofitTool.gson
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,7 @@ class TagController {
         @RequestParam size: Int,
         @RequestParam(required = false) search: String?,
     ): ResponseEntity<MutableList<Tag>> {
-        val result = tagService.findPublicFilterPageable(page, size, search)
+        val result = tagService.findFilterPageable(page, size, search, true)
         return ResponseEntity.status(HttpStatus.OK)
             .header(Constants.X_TOTAL_COUNT_HEADER, result.totalElements.toString())
             .body(result.content)
@@ -47,6 +48,11 @@ class TagController {
     @PostMapping("/api/tag")
     fun createTag(@RequestParam name: String): ResponseEntity<Tag> {
         return ResponseEntity.status(HttpStatus.CREATED).body(tagService.create(name))
+    }
+
+    @PatchMapping("api/tag/{id}")
+    fun updateTag(@PathVariable id: Long, @RequestBody request: Tag): ResponseEntity<Tag> {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(tagService.update(id, request))
     }
 
     @DeleteMapping("/api/tag/{id}")
