@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-rm -rf /root/lonjas-spring/project
-git clone -b master /root/lonjas-spring/git /root/lonjas-spring/project
-bash -x /root/lonjas-spring/project/gradle/bash/deploy.sh
